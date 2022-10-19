@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 public class Driver extends JFrame {
 
     public Driver() {
-        System.out.println("Starting Smart Rockets!");
+        System.out.println("Starting Langton's Ants");
         initUI();
     }
     

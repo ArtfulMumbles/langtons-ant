@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.Dimension;
 
 
@@ -12,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 
-public class GamePanel extends JPanel implements ActionListener {
+public class GamePanel extends JPanel implements ActionListener, MouseListener {
 
     private final int DELAY = 0;
 
@@ -20,14 +22,16 @@ public class GamePanel extends JPanel implements ActionListener {
     private final int SCREEN_Y = 800;
 
     public Timer timer;
-    public LangstonsAnt ant;
+    public LangtonsAnt ant;
 
     public GamePanel() {
         initPanel();
     }
 
     public void initPanel() {
-        ant = new LangstonsAnt(SCREEN_X, SCREEN_Y);
+        ant = new LangtonsAnt(SCREEN_X, SCREEN_Y);
+
+        addMouseListener(this);
 
         addKeyListener(new TAdapter());
         setOpaque(false);
@@ -68,5 +72,32 @@ public class GamePanel extends JPanel implements ActionListener {
         public void keyPressed(KeyEvent e) {
 
         }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+/*         ant.addAnt(e.getX(), e.getY());
+ */        System.out.println("X: " + e.getX() + "Y: " + e.getY());
+        
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        ant.addAnt(e.getX(), e.getY());
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        return;
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        return;
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        return;
     }
 }

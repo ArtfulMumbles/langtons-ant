@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Board {
@@ -7,7 +8,7 @@ public class Board {
 
     private int[][] board;
     private int boardSize;
-    private Ant ants[];
+    private ArrayList<Ant> ants;
     private Color[] pallete;
     private String rules;
 
@@ -15,11 +16,11 @@ public class Board {
         board = new int[boardSize][boardSize];
         this.boardSize = boardSize;
 
-        ants = new Ant[numAnts];
+        ants = new ArrayList<Ant>();
 
-        for(int i = 0; i < ants.length; i++) {
-            ants[i] = new Ant( (i + 1) * boardSize / (numAnts + 1), (i + 1) * boardSize / (numAnts + 1));
-        }
+    /*  for(int i = 0; i < ants.size(); i++) {
+            ants.add(new Ant( (i + 1) * boardSize / (numAnts + 1), (i + 1) * boardSize / (numAnts + 1)));
+        } */
 
         this.rules = rules;
 
@@ -32,6 +33,10 @@ public class Board {
     public void update() throws Exception {
         for(Ant ant : ants) {
             ant.update();
+            if(!ant.isAlive()) {
+                ants.remove(ant);
+                System.out.println("removed!");
+            }
         }
     }
     
@@ -67,6 +72,10 @@ public class Board {
         
     }
 
+    public void addAnt(int x, int y) {
+        ants.add(new Ant(x, y));
+    }
+
     public Color randomColor() {
         float r = rand.nextFloat() / 2f + 0.5f;
         float g = rand.nextFloat() / 2f + 0.5f;
@@ -90,11 +99,17 @@ public class Board {
         private int x;
         private int y;
         private int dir;
+        private boolean alive;
 
         Ant(int x, int y) {
             this.x = x;
             this.y = y;
             this.dir = 2;
+            this.alive = true;
+        }
+
+        public boolean isAlive() {
+            return alive;
         }
 
         private void update() throws Exception {
@@ -112,22 +127,29 @@ public class Board {
             board[x][y] = board[x][y] >= rules.length() - 1 ? 0 : board[x][y] + 1;
 
             moveForward();
+            outOfBounds();
         }
 
         private void moveForward() {
             switch(dir) {
                 case 0:
-                    x += 1;
+                    x = x + 1;
                     break;
                 case 1:
-                    y += 1;
+                    y = y + 1;
                     break;
                 case 2:
-                    x -= 1;
+                    x = x - 1;
                     break;
                 case 3:
-                    y -= 1; 
+                    y = y - 1; 
                     break;
+            }
+        }
+
+        private void outOfBounds() {
+            if(x > boardSize || x < 0 || y > boardSize || y < 0) {
+                alive = false;
             }
         }
 
@@ -140,6 +162,9 @@ public class Board {
         }
 
         private void paint(Graphics2D g, int screenX, int screenY) {
+
+            if(!alive) return;
+
             g.setColor(Color.RED);
             g.fillOval(x * screenX / boardSize,
                        y * screenY / boardSize,

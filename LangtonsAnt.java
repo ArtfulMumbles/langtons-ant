@@ -1,16 +1,16 @@
 import java.awt.Graphics2D;
 
-public class LangstonsAnt {
+public class LangtonsAnt {
 
-    private final int BOARD_SIZE = 100;
-    private final String RULES = "RLLR";
-    private final int NUM_ANTS = 2;
+    private final int BOARD_SIZE = 160;
+    private final String RULES = "RLRL";
+    private final int NUM_ANTS = 20;
 
     private int screenX;
     private int screenY;
     private Board board;
 
-    public LangstonsAnt(int screenX, int screenY) {
+    public LangtonsAnt(int screenX, int screenY) {
 
         board = new Board(BOARD_SIZE, RULES, NUM_ANTS);
 
@@ -25,6 +25,10 @@ public class LangstonsAnt {
 
     public void update() throws Exception {
         board.update();
+    }
+
+    public void addAnt(int x, int y) {
+        board.addAnt(x / (screenX / BOARD_SIZE), y / (screenY / BOARD_SIZE));
     }
 
 }
